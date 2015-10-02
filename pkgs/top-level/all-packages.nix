@@ -411,6 +411,13 @@ let
 
   makeDesktopItem = callPackage ../build-support/make-desktopitem { };
 
+  restricted = if (builtins.tryEval <restricted>).success then
+    (import <restricted> { })
+  else
+    throw ''Could not find nixpkgs-restricted in $NIX_PATH.  See
+    https://github.com/NixOS/nixpkgs-restricted for instructions on
+    how to add it.'';
+
   makeAutostartItem = callPackage ../build-support/make-startupitem { };
 
   makeInitrd = { contents, compressor ? "gzip -9n", prepend ? [ ] }:
